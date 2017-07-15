@@ -12,17 +12,18 @@ import com.amber.random.datapoliceuk.databinding.ForceItemRowLayoutBinding;
 import com.amber.random.datapoliceuk.model.force.ForceItem;
 import com.amber.random.datapoliceuk.viewmodel.ForcesListFragmentView;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewHolder> {
 
     private final List<ForceItem> mForces;
-    private final ForcesListFragmentView mForcesListFragmentView;
+    private final WeakReference<ForcesListFragmentView> mForcesListFragmentView;
 
     public ForcesAdapter(List<ForceItem> forces, ForcesListFragmentView forcesListFragmentView) {
         super();
         mForces = forces;
-        mForcesListFragmentView = forcesListFragmentView;
+        mForcesListFragmentView = new WeakReference(forcesListFragmentView);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ForceItemRowLayoutBinding binding = DataBindingUtil.
                 inflate(inflater, R.layout.force_item_row_layout, parent, false);
-        return new ForceViewHolder(binding);
+        return new ForceViewHolder(mForcesListFragmentView.get(), binding);
     }
 
     @Override
@@ -44,12 +45,13 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
         return mForces.size();
     }
 
-    public class ForceViewHolder extends BaseController {
-
+    public static class ForceViewHolder extends BaseController {
+        private final WeakReference<ForcesListFragmentView> mForcesListFragmentView;
         private ForceItemRowLayoutBinding mForceItemRowLayoutBinding;
 
-        public ForceViewHolder(ForceItemRowLayoutBinding forceItemRowLayoutBinding) {
+        public ForceViewHolder(ForcesListFragmentView fragment, ForceItemRowLayoutBinding forceItemRowLayoutBinding) {
             super(forceItemRowLayoutBinding.getRoot());
+            mForcesListFragmentView = new WeakReference(fragment);
             mForceItemRowLayoutBinding = forceItemRowLayoutBinding;
             mForceItemRowLayoutBinding.setController(this);
         }
@@ -61,7 +63,7 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
 
         @Override
         public void onClick(View v) {
-            mForcesListFragmentView.onClick(mForceItemRowLayoutBinding.getForceItem());
+            mForcesListFragmentView.get().onClick(mForceItemRowLayoutBinding.getForceItem());
         }
     }
 }

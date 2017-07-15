@@ -21,11 +21,18 @@ public class ForcesListViewModel extends BaseViewModel<ForcesListFragmentView> {
             Disposable disposable = mBackendServiceApi.getAllForces()
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(res -> mView.load(res), ex -> mView.error(ex));
+                    .subscribe(res -> {
+                        if (mViewWR.isEnqueued())
+                            mViewWR.get().load(res);
+                    }, ex -> {
+                        if (mViewWR.isEnqueued())
+                            mViewWR.get().error(ex);
+                    });
 
             mCompositeDisposable.add(disposable);
         } catch (Exception ex) {
-            mView.error(ex);
+            if (mViewWR.isEnqueued())
+                mViewWR.get().error(ex);
         }
     }
 }

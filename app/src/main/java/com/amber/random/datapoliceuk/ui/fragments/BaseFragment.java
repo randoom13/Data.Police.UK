@@ -32,6 +32,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, T extends BaseView
 
     @Override
     public void onDestroyView() {
+        mBinding = null;
         mViewModel.detach();
         super.onDestroyView();
     }
