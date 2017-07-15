@@ -63,7 +63,8 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
 
         @Override
         public void onClick(View v) {
-            mForcesListFragmentView.get().onClick(mForceItemRowLayoutBinding.getForceItem());
+            if (!mForcesListFragmentView.isEnqueued())
+                mForcesListFragmentView.get().onClick(mForceItemRowLayoutBinding.getForceItem());
         }
     }
 }

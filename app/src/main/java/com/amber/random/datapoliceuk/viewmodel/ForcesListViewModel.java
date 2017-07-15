@@ -22,10 +22,10 @@ public class ForcesListViewModel extends BaseViewModel<ForcesListFragmentView> {
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(res -> {
-                        if (mViewWR.isEnqueued())
+                        if (!mViewWR.isEnqueued())
                             mViewWR.get().load(res);
                     }, ex -> {
-                        if (mViewWR.isEnqueued())
+                        if (!mViewWR.isEnqueued())
                             mViewWR.get().error(ex);
                     });
 
