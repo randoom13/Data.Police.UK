@@ -48,6 +48,8 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
     }
 
