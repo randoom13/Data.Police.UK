@@ -17,19 +17,24 @@ import java.util.List;
 
 public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewHolder> {
 
-    private final List<ForceItem> mForces;
     private final WeakReference<ForcesListFragmentView> mForcesListFragmentView;
+    private List<ForceItem> mForces;
 
-    public ForcesAdapter(List<ForceItem> forces, ForcesListFragmentView forcesListFragmentView) {
+    public ForcesAdapter(ForcesListFragmentView forcesListFragmentView) {
         super();
-        mForces = forces;
         mForcesListFragmentView = new WeakReference(forcesListFragmentView);
+    }
+
+    public void setForces(List<ForceItem> forces) {
+        mForces = forces;
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(ForceViewHolder holder, int position) {
         holder.bind(mForces.get(position));
     }
+
 
     @Override
     public ForceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,7 +47,7 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
 
     @Override
     public int getItemCount() {
-        return mForces.size();
+        return null != mForces ? mForces.size() : 0;
     }
 
     public static class ForceViewHolder extends BaseController {

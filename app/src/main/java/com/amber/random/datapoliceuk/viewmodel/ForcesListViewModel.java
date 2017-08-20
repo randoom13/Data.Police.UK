@@ -1,5 +1,7 @@
 package com.amber.random.datapoliceuk.viewmodel;
 
+import android.text.TextUtils;
+
 import com.amber.random.datapoliceuk.api.BackendServiceApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,24 +17,31 @@ public class ForcesListViewModel extends BaseViewModel<ForcesListFragmentView> {
         mBackendServiceApi = backendServiceApi;
     }
 
-    public void loadData() {
+    public void loadData(String filter) {
         clearSubscriptions();
         try {
+            boolean emptyFilter = TextUtils.isEmpty(filter);
             Disposable disposable = mBackendServiceApi.getAllForces()
                     .subscribeOn(Schedulers.computation())
+                    .flatMapIterable(items -> items)
+                    .filter(it -> emptyFilter || (!TextUtils.isEmpty(it.name()) && it.name().contains(filter)))
+                    .toList()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(res -> {
-                        if (!mViewWR.isEnqueued())
-                            mViewWR.get().load(res);
+                        ForcesListFragmentView forcesListFragment = mViewWR.get();
+                        if (null != forcesListFragment)
+                            forcesListFragment.load(res);
                     }, ex -> {
-                        if (!mViewWR.isEnqueued())
-                            mViewWR.get().error(ex);
+                        ForcesListFragmentView forcesListFragment = mViewWR.get();
+                        if (null != forcesListFragment)
+                            forcesListFragment.error(ex);
                     });
 
             mCompositeDisposable.add(disposable);
         } catch (Exception ex) {
-            if (mViewWR.isEnqueued())
-                mViewWR.get().error(ex);
+            ForcesListFragmentView forcesListFragment = mViewWR.get();
+            if (null != forcesListFragment)
+                forcesListFragment.error(ex);
         }
     }
 }

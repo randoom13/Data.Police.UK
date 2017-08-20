@@ -2,8 +2,12 @@ package com.amber.random.datapoliceuk.ui.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.amber.random.datapoliceuk.viewmodel.BaseViewModel;
 import com.amber.random.datapoliceuk.viewmodel.IView;
@@ -16,6 +20,17 @@ public abstract class BaseFragment<B extends ViewDataBinding, T extends BaseView
     @Inject
     protected T mViewModel;
     protected B mBinding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     protected final void bindView(int layout) {
         if (mViewModel == null)
