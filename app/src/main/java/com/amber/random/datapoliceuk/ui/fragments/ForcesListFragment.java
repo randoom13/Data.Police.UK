@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,16 +23,17 @@ import java.util.List;
 
 public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, ForcesListViewModel>
         implements ForcesListFragmentView,
-        SearchView.OnCloseListener, SearchView.OnQueryTextListener {
+        SearchView.OnCloseListener, SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener {
     private static final String sStateQuery = "sq";
     private ForcesAdapter mForcesAdapter;
     private SearchView mSearchView;
     private CharSequence mInitialQuery;
+
     //region searchView interfaces implementation
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.d(getClass().getSimpleName(), query);
         mViewModel.loadData(query);
         return true;
     }
@@ -45,10 +45,24 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     @Override
     public boolean onClose() {
+        mViewModel.loadData("");
         return true;
     }
 
     //endregion searchView interfaces implementation
+
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        mViewModel.loadData("");
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +137,8 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
         mSearchView.setOnCloseListener(this);
         mSearchView.setSubmitButtonEnabled(false);
         mSearchView.setIconifiedByDefault(true);
+        MenuItemCompat.setOnActionExpandListener(search, this);
+
         if (!TextUtils.isEmpty(mInitialQuery)) {
             mSearchView.setIconified(false);
             MenuItemCompat.expandActionView(search);
