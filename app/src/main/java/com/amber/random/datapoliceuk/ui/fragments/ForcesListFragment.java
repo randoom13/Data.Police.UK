@@ -1,8 +1,10 @@
 package com.amber.random.datapoliceuk.ui.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.amber.random.datapoliceuk.App;
 import com.amber.random.datapoliceuk.R;
@@ -24,8 +29,9 @@ import java.util.List;
 public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, ForcesListViewModel>
         implements ForcesListFragmentView,
         SearchView.OnCloseListener, SearchView.OnQueryTextListener,
-        MenuItemCompat.OnActionExpandListener {
+        MenuItemCompat.OnActionExpandListener, AdapterView.OnItemClickListener {
     private static final String sStateQuery = "sq";
+    private ActionBarDrawerToggle toggle = null;
     private ForcesAdapter mForcesAdapter;
     private SearchView mSearchView;
     private CharSequence mInitialQuery;
@@ -51,6 +57,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     //endregion searchView interfaces implementation
 
+    //region OnActionExpandListener implementation
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
@@ -63,6 +70,8 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
         return true;
     }
 
+    //endregion OnActionExpandListener implementation
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +81,38 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
         mBinding.setIsLoading(true);
         mForcesAdapter = new ForcesAdapter(this);
         mBinding.forces.setAdapter(mForcesAdapter);
-        setHasOptionsMenu(true);
-        Toolbar toolbar = mBinding.toolbar;
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         if (null != savedInstanceState) {
             mInitialQuery = savedInstanceState.getCharSequence(sStateQuery);
         }
+        initializeDrawer();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Toolbar toolbar = mBinding.toolbar;
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setTitle(R.string.forces_list_title);
+        setHasOptionsMenu(true);
+    }
+
+    private void initializeDrawer() {
+        mBinding.drawer.setAdapter(new ArrayAdapter<String>(getActivity(),
+                R.layout.drawer_row, getResources().getStringArray(R.array.drawer_rows)));
+        mBinding.drawer.setOnItemClickListener(this);
+        toggle = new ActionBarDrawerToggle(this.getActivity(), mBinding.drawerLayout,
+                R.string.drawer_open, R.string.drawer_close);
+        mBinding.drawerLayout.addDrawerListener(toggle);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> listView, View row,
+                            int position, long id) {
+        mBinding.drawerLayout.closeDrawers();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        toggle.syncState();
     }
 
     @Override
@@ -93,9 +128,14 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         configureSearchView(menu);
     }
@@ -112,10 +152,9 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.search) {
-
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override

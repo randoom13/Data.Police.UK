@@ -24,7 +24,7 @@ public class ForcesListViewModel extends BaseViewModel<ForcesListFragmentView> {
             Disposable disposable = mBackendServiceApi.getAllForces()
                     .subscribeOn(Schedulers.computation())
                     .flatMapIterable(items -> items)
-                    .filter(it -> emptyFilter || (!TextUtils.isEmpty(it.name()) && it.name().contains(filter)))
+                    .filter(it -> emptyFilter || it.name().contains(filter))
                     .toList()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(res -> {

@@ -42,7 +42,7 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ForceItemRowLayoutBinding binding = DataBindingUtil.
                 inflate(inflater, R.layout.force_item_row_layout, parent, false);
-        return new ForceViewHolder(mForcesListFragmentView.get(), binding);
+        return new ForceViewHolder(mForcesListFragmentView, binding);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
         private final WeakReference<ForcesListFragmentView> mForcesListFragmentView;
         private ForceItemRowLayoutBinding mForceItemRowLayoutBinding;
 
-        public ForceViewHolder(ForcesListFragmentView fragment, ForceItemRowLayoutBinding forceItemRowLayoutBinding) {
+        public ForceViewHolder(WeakReference<ForcesListFragmentView> forcesListFragmentView, ForceItemRowLayoutBinding forceItemRowLayoutBinding) {
             super(forceItemRowLayoutBinding.getRoot());
-            mForcesListFragmentView = new WeakReference(fragment);
+            mForcesListFragmentView = forcesListFragmentView;
             mForceItemRowLayoutBinding = forceItemRowLayoutBinding;
             mForceItemRowLayoutBinding.setController(this);
         }
@@ -68,8 +68,9 @@ public class ForcesAdapter extends RecyclerView.Adapter<ForcesAdapter.ForceViewH
 
         @Override
         public void onClick(View v) {
-            if (!mForcesListFragmentView.isEnqueued())
-                mForcesListFragmentView.get().onClick(mForceItemRowLayoutBinding.getForceItem());
+            ForcesListFragmentView fragmentView = mForcesListFragmentView.get();
+            if (null != fragmentView)
+                fragmentView.onClick(mForceItemRowLayoutBinding.getForceItem());
         }
     }
 }

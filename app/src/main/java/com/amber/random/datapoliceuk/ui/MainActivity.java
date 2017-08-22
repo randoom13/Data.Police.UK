@@ -15,8 +15,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupStrictMode();
-        getSupportFragmentManager().beginTransaction()
-                .add(new ForcesListFragment(), CRIMES_TAG).commit();
+        if (null == getSupportFragmentManager().findFragmentByTag(CRIMES_TAG))
+            getSupportFragmentManager().beginTransaction()
+                    .add(new ForcesListFragment(), CRIMES_TAG).commit();
     }
 
     private void setupStrictMode() {

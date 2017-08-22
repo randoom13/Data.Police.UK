@@ -6,25 +6,29 @@
         <variable
             name="forceItem"
             type="com.amber.random.datapoliceuk.model.force.ForceItem" />
+
         <variable
             name="controller"
-            type="com.amber.random.datapoliceuk.ui.adapters.BaseController"/>
+            type="com.amber.random.datapoliceuk.ui.adapters.BaseController" />
     </data>
-<android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp">
-    <LinearLayout
-        android:onClick="@{controller}"
-        android:id="@+id/row_content"
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?attr/selectableItemBackground">
-        <TextView
+        android:layout_margin="4dp">
+
+        <LinearLayout
+            android:id="@+id/row_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{forceItem.name()}" />
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{controller}"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{forceItem.name()}" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </layout>
