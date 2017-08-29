@@ -136,7 +136,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         configureSearchView(menu);
     }
 
