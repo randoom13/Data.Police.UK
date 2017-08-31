@@ -17,20 +17,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkModule {
     @Provides
     @Singleton
-    Gson provideGson() {
+    public Gson provideGson() {
         return new GsonBuilder().serializeNulls()
                 .registerTypeAdapterFactory(AutoValueGsonFactory.create()).create();
     }
 
     @Provides
     @Singleton
-    GsonConverterFactory provideGsonConverterFactory(Gson gson) {
+    public GsonConverterFactory provideGsonConverterFactory(Gson gson) {
         return GsonConverterFactory.create(gson);
     }
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(GsonConverterFactory factory) {
+    public Retrofit provideRetrofit(GsonConverterFactory factory) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.END_POINT)
                 .addConverterFactory(factory)

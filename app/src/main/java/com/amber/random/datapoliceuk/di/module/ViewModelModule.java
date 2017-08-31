@@ -12,7 +12,7 @@ import dagger.Provides;
 public class ViewModelModule {
     @Provides
     @Singleton
-    ForcesListViewModel provideMainViewModel(BackendServiceApi backendServiceApi){
+    public ForcesListViewModel provideMainViewModel(BackendServiceApi backendServiceApi) {
         return new ForcesListViewModel(backendServiceApi);
     }
 }

@@ -13,7 +13,7 @@ public class RestApiModule {
 
     @Provides
     @Singleton
-    BackendServiceApi provideRestApi(Retrofit retrofit) {
+    public BackendServiceApi provideRestApi(Retrofit retrofit) {
         return retrofit.create(BackendServiceApi.class);
     }
 }
