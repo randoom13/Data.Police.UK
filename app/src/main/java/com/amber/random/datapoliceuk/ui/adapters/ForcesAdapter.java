@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.amber.random.datapoliceuk.R;
 import com.amber.random.datapoliceuk.databinding.ForceItemRowLayoutBinding;
 import com.amber.random.datapoliceuk.model.force.ForceItem;
-import com.amber.random.datapoliceuk.viewmodel.ForcesListFragmentView;
+import com.amber.random.datapoliceuk.presenter.ForcesListFragmentView;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

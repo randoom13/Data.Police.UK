@@ -1,4 +1,4 @@
-package com.amber.random.datapoliceuk.viewmodel;
+package com.amber.random.datapoliceuk.presenter;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,10 +11,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class ForcesListViewModel extends BaseViewModel<ForcesListFragmentView> {
+public class ForcesListPresenter extends BasePresenter<ForcesListFragmentView> {
     private final BackendServiceApi mBackendServiceApi;
 
-    public ForcesListViewModel(BackendServiceApi backendServiceApi) {
+    public ForcesListPresenter(BackendServiceApi backendServiceApi) {
         super();
         mBackendServiceApi = backendServiceApi;
     }

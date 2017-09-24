@@ -6,8 +6,8 @@ import android.support.annotation.VisibleForTesting;
 import com.amber.random.datapoliceuk.di.component.AppComponent;
 import com.amber.random.datapoliceuk.di.component.DaggerAppComponent;
 import com.amber.random.datapoliceuk.di.module.NetworkModule;
+import com.amber.random.datapoliceuk.di.module.PresenterModule;
 import com.amber.random.datapoliceuk.di.module.RestApiModule;
-import com.amber.random.datapoliceuk.di.module.ViewModelModule;
 
 public class App extends Application {
     private static AppComponent sComponent;
@@ -27,7 +27,7 @@ public class App extends Application {
         sComponent = DaggerAppComponent.builder()
                 .networkModule(new NetworkModule())
                 .restApiModule(new RestApiModule())
-                .viewModelModule(new ViewModelModule())
+                .presenterModule(new PresenterModule())
                 .build();
     }
 }

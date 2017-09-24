@@ -1,15 +1,15 @@
-package com.amber.random.datapoliceuk.viewmodel;
+package com.amber.random.datapoliceuk.presenter;
 
 import java.lang.ref.WeakReference;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public class BaseViewModel<T extends IView> {
+public class BasePresenter<T extends BaseView> {
     protected final CompositeDisposable mCompositeDisposable;
     protected WeakReference<T> mViewWR;
 
-    public BaseViewModel() {
+    public BasePresenter() {
         mCompositeDisposable = new CompositeDisposable();
     }
 

@@ -20,13 +20,13 @@ import com.amber.random.datapoliceuk.App;
 import com.amber.random.datapoliceuk.R;
 import com.amber.random.datapoliceuk.databinding.ForcesListFragmentBinding;
 import com.amber.random.datapoliceuk.model.force.ForceItem;
+import com.amber.random.datapoliceuk.presenter.ForcesListFragmentView;
+import com.amber.random.datapoliceuk.presenter.ForcesListPresenter;
 import com.amber.random.datapoliceuk.ui.adapters.ForcesAdapter;
-import com.amber.random.datapoliceuk.viewmodel.ForcesListFragmentView;
-import com.amber.random.datapoliceuk.viewmodel.ForcesListViewModel;
 
 import java.util.List;
 
-public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, ForcesListViewModel>
+public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, ForcesListPresenter>
         implements ForcesListFragmentView,
         SearchView.OnCloseListener, SearchView.OnQueryTextListener,
         MenuItemCompat.OnActionExpandListener, AdapterView.OnItemClickListener {
@@ -40,7 +40,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mViewModel.loadData(query);
+        mPresenter.loadData(query);
         return true;
     }
 
@@ -51,7 +51,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     @Override
     public boolean onClose() {
-        mViewModel.loadData("");
+        mPresenter.loadData("");
         return true;
     }
 
@@ -61,7 +61,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        mViewModel.loadData("");
+        mPresenter.loadData("");
         return true;
     }
 
@@ -76,7 +76,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
-        mViewModel.attach(this);
+        mPresenter.attach(this);
         bindView(R.layout.forces_list_fragment);
         mBinding.setIsLoading(true);
         mForcesAdapter = new ForcesAdapter(this);
@@ -119,7 +119,7 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     public void onResume() {
         super.onResume();
         String filter = (null != mSearchView && !mSearchView.isIconified()) ? mSearchView.getQuery().toString() : "";
-        mViewModel.loadData(filter);
+        mPresenter.loadData(filter);
     }
 
     @Override

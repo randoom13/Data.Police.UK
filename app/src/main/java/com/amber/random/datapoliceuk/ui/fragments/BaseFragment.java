@@ -5,35 +5,35 @@ import android.databinding.ViewDataBinding;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
-import com.amber.random.datapoliceuk.viewmodel.BaseViewModel;
-import com.amber.random.datapoliceuk.viewmodel.IView;
+import com.amber.random.datapoliceuk.presenter.BasePresenter;
+import com.amber.random.datapoliceuk.presenter.BaseView;
 
 import javax.inject.Inject;
 
-public abstract class BaseFragment<B extends ViewDataBinding, T extends BaseViewModel>
-        extends Fragment implements IView {
+public abstract class BaseFragment<B extends ViewDataBinding, P extends BasePresenter>
+        extends Fragment implements BaseView {
 
     @Inject
-    protected T mViewModel;
+    protected P mPresenter;
     protected B mBinding;
 
     protected final void bindView(int layout) {
-        if (mViewModel == null)
-            throw new IllegalStateException("mViewModel must not be null and should be injected via fragmentComponent.inject(this);");
+        if (mPresenter == null)
+            throw new IllegalStateException("mPresenter must not be null and should be injected via fragmentComponent.inject(this);");
 
         mBinding = DataBindingUtil.setContentView(this.getActivity(), layout);
     }
 
     @Override
     public void onStop() {
-        mViewModel.clearSubscriptions();
+        mPresenter.clearSubscriptions();
         super.onStop();
     }
 
     @Override
     public void onDestroyView() {
         mBinding = null;
-        mViewModel.detach();
+        mPresenter.detach();
         super.onDestroyView();
     }
 
