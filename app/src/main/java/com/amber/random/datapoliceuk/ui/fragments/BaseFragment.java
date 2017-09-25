@@ -21,6 +21,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, P extends BasePres
         if (mPresenter == null)
             throw new IllegalStateException("mPresenter must not be null and should be injected via fragmentComponent.inject(this);");
 
+        mPresenter.attach(this);
         mBinding = DataBindingUtil.setContentView(this.getActivity(), layout);
     }
 

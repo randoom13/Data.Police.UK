@@ -76,7 +76,6 @@ public class ForcesListFragment extends BaseFragment<ForcesListFragmentBinding, 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
-        mPresenter.attach(this);
         bindView(R.layout.forces_list_fragment);
         mBinding.setIsLoading(true);
         mForcesAdapter = new ForcesAdapter(this);
